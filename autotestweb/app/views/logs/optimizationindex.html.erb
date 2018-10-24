@@ -1,0 +1,85 @@
+<% content_for :body_class do %>
+<% end%>
+<% content_for :ribbon do %>
+  <!-- RIBBON -->
+  <div id="ribbon">
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+      <li>首页</li>
+      <li>操作日志</li>
+    </ol>
+  </div>
+  <!-- END RIBBON -->
+<% end %>
+<!-- MAIN CONTENT -->
+<div id="content">
+  <!-- widget grid -->
+  <section id="widget-grid" class="">
+    <p id="notice"><%= notice %></p>
+    <!-- row -->
+    <div class="row">
+      <!-- NEW WIDGET START -->
+      <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+          <header>
+            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+            <h2>操作日志</h2>
+          </header>
+          <!-- widget div-->
+          <div>
+            <!-- widget edit box -->
+            <div class="jarviswidget-editbox">
+              <!-- This area used as dropdown edit box -->
+            </div>
+            <!-- end widget edit box -->
+            <!-- widget content -->
+            <div class="widget-body">
+              <div class="table-responsive">
+                <div class="form-inline input-group input-group-sm" style="float:right; margin-left:50px;">
+                  <table>
+                    <%= search_form_for @q, url: optimizationindexs_path do |f| %>
+                      <td><%= f.search_field :objname_cont, class: "form-control", style: "border:1px solid #C0C0C0" %></td>
+                      <td><span class="input-group-btn"><%= f.submit class: "btn btn-primary" %></span></td>
+                    <% end %>
+                  </table>
+                </div>
+                <table id="datatable_fixed_column" class="table table-striped table-bordered" width="100%">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>User</th>
+                      <th>Action</th>
+                      <th>Model</th> 
+                      <th>modelname </th>
+                      <th>time </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @logs.each do |log| %>
+                      <tr>
+                        <td><%= log.id %></td>
+                        <td><%= log.user %></td>
+                        <td><%= Constant.find_by_name_and_scope( log.action ,"Action" ) %></td>
+                        <td><%= Constant.find_by_name_and_scope( log.modelclass ,"Model" ) %></td>
+                        <td><%= log.objname %></td> 
+                        <td><%= log.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td> 
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <%= render partial: "layouts/paginator", locals: {zone: @logs} %>
+            <!-- end widget content -->
+          </div>
+          <!-- end widget div -->
+        </div>
+        <!-- end widget -->
+      </div>
+      <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+  </div>
+  <!-- END MAIN CONTENT -->
+
+

@@ -1,0 +1,2 @@
+class Delaytask < ApplicationRecord
+end

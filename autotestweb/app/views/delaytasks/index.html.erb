@@ -1,0 +1,96 @@
+<% content_for :body_class do %>
+<% end%>
+<% content_for :ribbon do %>
+  <!-- RIBBON -->
+  <div id="ribbon">
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+      <li>首页</li>
+      <li>测试用例定时计划</li>
+    </ol>
+  </div>
+  <!-- END RIBBON -->
+<% end %>
+<!-- MAIN CONTENT -->
+<div id="content">
+  <!-- widget grid -->
+  <section id="widget-grid" class="">
+    <p id="notice"><%= notice %></p>
+    <!-- row -->
+    <div class="row">
+      <!-- NEW WIDGET START -->
+      <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+          <header>
+            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+            <h2>定时执行测试用例列表</h2>
+          </header>
+          <!-- widget div-->
+          <div>
+            <!-- widget edit box -->
+            <div class="jarviswidget-editbox">
+              <!-- This area used as dropdown edit box -->
+            </div>
+            <!-- end widget edit box -->
+            <!-- widget content -->
+            <div class="widget-body">
+              <div class="table-responsive">
+                <div style = "float:left;">
+                  <%= button_to '新增定时任务', new_delaytask_path, method: "get", class: "btn btn-primary" , type: 'all'  %>
+                </div>
+                <div class="form-inline input-group input-group-sm" style="float:right; margin-left:50px;">
+                  <table>
+                    <%= search_form_for @q, url: delaytasks_path  do |f| %>
+                      <td><%= f.search_field :name_cont, class: "form-control", style: "border:1px solid #C0C0C0" %></td>
+                      <td><span class="input-group-btn"><%= f.submit class: "btn btn-primary" %></span></td>
+                    <% end %>
+                  </table>
+                </div>
+                <table id="datatable_fixed_column" class="table table-striped table-bordered" width="100%">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>crontab</th>
+                      <th>app</th>
+                      <th>type</th>
+                      <th>mailto</th>
+                      <th>server</th>
+                      <th>env</th>
+
+                      <th colspan="3">操作选项</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @delaytasks.each do |delaytask| %>
+                      <tr>
+                        <td><%= delaytask.id %></td>
+                        <td><%= delaytask.name %></td>
+                        <td><%= delaytask.crontab %></td>
+                        <td><%= delaytask.app %></td>
+                        <td><%= delaytask.apptype %></td>
+                        <td><%= delaytask.mailto %></td>
+                        <td><%= delaytask.server %></td>
+                        <td><%= delaytask.env %></td>
+                        <td><%= link_to '查看', delaytask  , :class=>'label label-info' %></td>
+                        <td><%= link_to '修改', edit_delaytask_path(delaytask), :class=>'label label-primary' %></td>
+                        <td><%= link_to '删除', delaytask, method: :delete, data: { confirm: 'Are you sure?' } , :class=>'label label-danger'%></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <%= render partial: "layouts/paginator", locals: {zone: @delaytasks} %>
+            <!-- end widget content -->
+          </div>
+          <!-- end widget div -->
+        </div>
+        <!-- end widget -->
+      </div>
+      <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+  </div>
+  <!-- END MAIN CONTENT -->
+

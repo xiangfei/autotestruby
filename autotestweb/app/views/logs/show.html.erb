@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Controller:</strong>
+  <%= @log.controller %>
+</p>
+
+<p>
+  <strong>Action:</strong>
+  <%= @log.action %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @log.user %>
+</p>
+
+<p>
+  <strong>Params:</strong>
+  <%= @log.params %>
+</p>
+
+<p>
+  <strong>Objid:</strong>
+  <%= @log.objid %>
+</p>
+
+<p>
+  <strong>Method:</strong>
+  <%= @log.method %>
+</p>
+
+<%= link_to 'Edit', edit_log_path(@log) %> |
+<%= link_to 'Back', logs_path %>

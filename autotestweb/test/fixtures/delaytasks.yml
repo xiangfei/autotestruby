@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  app: MyString
+  crontab: MyString
+  apptype: MyString
+
+two:
+  app: MyString
+  crontab: MyString
+  apptype: MyString

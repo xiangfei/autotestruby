@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  testcase_id: 1
+  runtestcase_id: 1
+
+two:
+  testcase_id: 1
+  runtestcase_id: 1

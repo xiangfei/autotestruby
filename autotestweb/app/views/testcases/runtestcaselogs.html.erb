@@ -1,0 +1,106 @@
+<% content_for :body_class do %>
+<% end%>
+<% content_for :ribbon do %>
+  <!-- RIBBON -->
+  <div id="ribbon">
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+      <li>首页</li>
+    </ol>
+  </div>
+  <!-- END RIBBON -->
+<% end %>
+<!-- MAIN CONTENT -->
+<div id="content">
+  <!-- widget grid -->
+  <section id="widget-grid" class="">
+    <p id="notice"><%= notice %></p>
+    <!-- row -->
+    <div class="row">
+      <!-- NEW WIDGET START -->
+      <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+          <header>
+            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+            <h2>测试用例执行结果</h2>
+          </header>
+          <!-- widget div-->
+          <div>
+            <!-- widget edit box -->
+            <div class="jarviswidget-editbox">
+              <!-- This area used as dropdown edit box -->
+            </div>
+            <!-- end widget edit box -->
+            <!-- widget content -->
+            <div class="widget-body">
+              <div class="table-responsive">
+                <div class="row">
+                  <div class="form-inline input-group input-group-sm" style="float:right; margin-left:50px;">
+                    <table>
+                      <%= search_form_for @q, url: run_testcase_logs_path  do |f| %>
+                        <td><%= f.search_field :server_or_app_cont, class: "form-control", style: "border:1px solid #C0C0C0" %></td>
+                        <td><span class="input-group-btn"><%= f.submit class: "btn btn-primary" %></span></td>
+                      <% end %>
+                    </table>
+                  </div>
+                </div>
+                <div class="row">
+                  <div style="margin:3px;overflow:scroll">
+                    <table id="datatable_fixed_column" class="table table-striped table-bordered" width="100%">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>测试APP</th>
+                          <th>Run server</th>
+                          <th>casetype</th>
+                          <th>env</th>
+                          <th> status</th>
+                          <th>user</th> 
+                          <th>runtype</th>
+                          <th>list</th>
+                          <th colspan="1">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% @runtestcases.each do |runtestcase| %>
+                          <tr>
+                            <td><%= runtestcase.id %></td>
+                            <td><%= runtestcase.app %></td>
+                            <td><%= runtestcase.server %></td>
+                            <td><%= runtestcase.casetype %></td>
+                            <td><%= runtestcase.env %></td>
+                            <td><%= runtestcase.reportstatus %></td> 
+                            <td><%= runtestcase.user %> </td>
+                            <td><%= runtestcase.runtype %> </td>
+                            <td> <% TestcaseRuncaseRelation.where(:runtestcase_id => runtestcase.id).each do |releation|%>
+                                <%  if  Testcase.exists?(releation.testcase_id)%>
+                                  <%=Testcase.find(releation.testcase_id).case_id %> <br/>
+                                <%end%>
+                              <%end%>
+                            </td>
+                            <td> 
+                              <%if runtestcase.status == "1" %>
+                                <%= link_to "测试报告" , download_testcase_report_path(runtestcase)     %>
+                              <%end%>
+                              <%= link_to "日志" , testcase_errlog_path(runtestcase)     %>
+                            </td>
+                          </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                  </div>
+                  <%= render partial: "layouts/paginator", locals: {zone: @runtestcases} %>
+                </div>
+              </div>
+            </div>
+            <!-- end widget content -->
+          </div>
+          <!-- end widget div -->
+        </div>
+        <!-- end widget -->
+      </div>
+      <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+  </div>
+  <!-- END MAIN CONTENT -->

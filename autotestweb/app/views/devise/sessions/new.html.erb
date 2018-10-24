@@ -1,0 +1,96 @@
+<% content_for :html_id, "extr-page" %>
+<% content_for :body_class, "animated fadeInDown" %>
+<% content_for :top_right do %>
+  <span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs">Need an account?</span>
+    <%= link_to 'Create account', new_user_registration_path , class: 'btn btn-xs bg-color-pink txt-color-white'  %>
+  </span>
+<% end %>
+<!-- MAIN CONTENT -->
+<!--div id="content" class="container"-->
+<div>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
+      <h1 class="txt-color-red login-header-big">登陆</h1>
+
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+      <div class="well no-padding">
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {id: 'login-form', class: 'smart-form client-form'}) do |f| %>
+
+          <fieldset>
+
+            <section>
+              <label class="label">E-mail</label>
+              <label class="input"> <i class="icon-append fa fa-user"></i>
+                <%= f.email_field :email, autofocus: true %>
+                <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please enter email address/username</b>
+              </label>
+            </section>
+
+            <section>
+              <label class="label">Password</label>
+              <label class="input"> <i class="icon-append fa fa-lock"></i>
+                <%= f.password_field :password, autocomplete: "off" %>
+                <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> Enter your password</b>
+              </label>
+              <div class="note">
+                <%= link_to 'Forgot password?', new_user_password_path %>
+              </div>
+            </section>
+
+          </fieldset>
+          <footer>
+            <button type="submit" class="btn btn-primary">
+              Sign in
+            </button>
+          </footer>
+        <% end %>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    runAllForms();
+
+    $(function() {
+      // Validation
+      $("#login-form").validate({
+        // Rules for form validation
+        rules : {
+          email : {
+            required : true,
+            email : true
+          },
+          password : {
+            required : true,
+            minlength : 3,
+            maxlength : 20
+          }
+        },
+
+        // Messages for form validation
+        messages : {
+          email : {
+            required : 'Please enter your email address',
+            email : 'Please enter a VALID email address'
+          },
+          password : {
+            required : 'Please enter your password'
+          }
+        },
+
+        // Do not change code below
+        errorPlacement : function(error, element) {
+          error.insertAfter(element.parent());
+        }
+      });
+    });
+  </script>
+<% end %>

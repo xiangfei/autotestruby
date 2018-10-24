@@ -1,0 +1,222 @@
+<% content_for :body_class do %>
+<% end%>
+<% content_for :ribbon do %>
+  <!-- RIBBON -->
+  <div id="ribbon">
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+      <li>首页</li>
+      <li>测试用例</li>
+    </ol>
+  </div>
+  <!-- END RIBBON -->
+<% end %>
+<!-- MAIN CONTENT -->
+<div id="content">
+  <!-- widget grid -->
+  <section id="widget-grid" class="">
+    <p id="notice"><%= notice %></p>
+    <!-- row -->
+    <div class="row">
+      <!-- NEW WIDGET START -->
+      <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+          <header>
+            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+            <h2> run <%=@case_type%> 测试用例  </h2>
+          </header>
+          <!-- widget div-->
+          <div>
+            <!-- widget edit box -->
+            <div class="jarviswidget-editbox">
+              <!-- This area used as dropdown edit box -->
+            </div>
+            <!-- end widget edit box -->
+            <!-- widget content -->
+            <div class="widget-body">
+              <div class="table-responsive">
+                <%= form_with(model: @runtestcase, url:post_run_testcase_path, remote: true , class: "form-horizontal m-t") do |form| %>
+                  <% if @runtestcase.errors.any? %>
+                    <div id="error_explanation">
+                      <h2><%= pluralize(@runtestcase.errors.count, "error") %> error</h2>
+                      <ul>
+                        <% @runtestcase.errors.full_messages.each do |message| %>
+                          <li><%= message %></li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  <% end %>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">所属项目</label>
+                    <div class="col-sm-8">
+                      <%= form.select :project_id, (Project.all.collect {|p| [p.name, p.id]}) , {},  id: :project_id ,:required => true , :class=>"form-control", :include_blank => false , :onchange => "loadapps()"%>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">应用名</label>
+                    <div class="col-sm-8">
+                      <select name="runtestcase[app_id]" id="testcase_app" class="form-control" onchange = "loadtestcases()">
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">环境</label>
+                    <div class="col-sm-8">
+                      <%= form.select :env, env_list , {:include_blank=> false},  id: :testcase_env  , :class=>"form-control"  %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">类型</label>
+                    <div class="col-sm-8">
+                      <%= form.select :casetype, casetype_list , {:include_blank=> false},  id: :env_id , :class=>"form-control"   ,readonly: true %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">run server</label>
+                    <div class="col-sm-8">
+                      <select name="runtestcase[server]" id="testcase_server_name" class="form-control">
+                        <%@servers.each do |server|%>
+                          <option value ="<%= server.ip%>" > <%= server.ip%>  </option>
+                        <%end %>
+                      </select>
+                    </div>
+                  </div>
+                  <% if  @case_type != 'api' %>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">run proxy</label>
+                      <div class="col-sm-8">
+                        <select name="runtestcase[proxy]" id="testcase_server_name" class="form-control">
+                          <%@proxies.each do |proxy|%>
+                            <option value ="<%= proxy.url%>" > <%= proxy.url%>  </option>
+                          <%end %>
+                        </select>
+                      </div>
+                    </div>
+                  <%end%>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">testcase type</label>
+                    <div class="col-sm-8">
+                      <select name="runtestcase[testcasetype]" id="tktype" class="form-control">
+                        <option value ="exclude" > exclude  </option>
+                        <option value ="include" > include  </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">list</label>
+                    <div class="col-sm-8">
+                      <select name="case_list[]" id="testcase_id" class="form-control"  multiple="multiple" >
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label"> mail to </label>
+                    <div class="col-sm-8">
+                      <%= form.select :mail_to, (Emailgroup.all.collect {|p| [p.name, p.name]}) , {:include_blank => false, } , :class=>"form-control"  %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-3">
+                      <button type="submit" class="btn btn-primary" id="form_submit">
+                        Run
+                      </button>
+                      <button type="button" class="btn btn-default" onclick="window.history.back();">
+                        返回
+                      </button>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+            <!-- end widget content -->
+          </div>
+          <!-- end widget div -->
+        </div>
+        <!-- end widget -->
+      </div>
+      <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+  </div>
+  <!-- END MAIN CONTENT -->
+  <script>
+    function loadapps(){
+      var project_id = $("#project_id").val();
+      $.ajax({
+        url: "/get_apps_by_project_id",
+        dataType: "JSON",
+        data: {'project_id': project_id},
+        type: "GET",
+        async: false,
+        success:function (data) {
+            var caseNum= data.length;
+            var option = "<option value=''>-----</option>";
+            if(caseNum>0){
+                for(var i = 0;i<caseNum;i++){
+                    option += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                }
+            }
+            $("#testcase_app").html(option);
+            $("#testcase_app").select2({ minimumResultsForSearch: -1 });
+        },
+        error:function(e) {
+            layer.alert("系统异常，请稍候重试！");
+        }
+      });
+    }
+    function loadtestcases(){
+      var testcase_app_id = $("#testcase_app").val();
+      console.log(testcase_app_id);
+     $('#deploymessagecontent').append('<pre id ="' +  testcase_app_id   +  'app" class="realtimelog"></pre>');
+      $.ajax({
+        url: "/get_testcases_by_app_id",
+        dataType: "JSON",
+        data: {'app_id': testcase_app_id},
+        type: "GET",
+        async: false,
+        success:function (data) {
+            var caseNum= data.length;
+            var option = "";
+            if(caseNum>0){
+                for(var i = 0;i<caseNum;i++){
+                    option += "<option value='"+data[i].id+"'>"+data[i].case_id+"</option>";
+                }
+            }
+            $("#testcase_id").html(option);
+            $("#testcase_id").select2({ minimumResultsForSearch: -1 });
+        },
+        error:function(e) {
+            alert("系统异常，请稍候重试！");
+        }
+      });
+    }
+    $('#testcase_id').select2({
+      closeOnSelect: false,
+      minimumResultsForSearch: -1
+    });
+    $("#testcase_folder_namexxx").change(function () {
+    
+      var testcase_folder= $("#testcase_folder_name").val();
+      $.ajax({
+        url: "/get_tastcase_by_folder",
+        dataType: "JSON",
+        data: {'folder': testcase_folder},
+        type: "GET",
+        async: false,
+        success:function (data) {
+            var caseNum= data.length;
+            var option = "";
+            if(caseNum>0){
+                for(var i = 0;i<caseNum;i++){
+                    option += "<option value='"+data[i].id+"'>"+data[i].case_id+"</option>";
+                }
+            }
+            $("#testcase_id").html(option);
+            $("#testcase_id").select2({ minimumResultsForSearch: -1 });
+        },
+        error:function(e) {
+            alert("系统异常，请稍候重试！");
+        }
+     });
+       });
+  </script>

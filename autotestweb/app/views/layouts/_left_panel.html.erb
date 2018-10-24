@@ -1,0 +1,75 @@
+<aside id="left-panel">
+  <!-- User info -->
+  <div class="login-info">
+    <span> <!-- User image size is adjusted inside CSS, it should stay as it -->
+      <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
+        <%= image_tag 'avatars/sunny.png', alt: 'me', class: 'online' %>
+        <span>
+          <%= current_user.email%>
+        </span>
+      </a>
+    </span>
+  </div>
+  <!-- end user info -->
+  <!-- NAVIGATION : This navigation is also responsive-->
+  <nav>
+    <!--
+    NOTE: Notice the gaps after each icon usage <i></i>..
+    Please note that these links work a bit different than
+    traditional href="" links. See documentation for details.
+    -->
+    <ul>
+      <%= left_menu %>
+      <li class="chat-users">
+        <a href="#"><i class="fa fa-lg fa-fw fa-comment-o"><em class="bg-color-pink flash animated">!</em></i> <span class="menu-item-parent">Chat</span></a>
+        <ul>
+          <li>
+            <!-- DISPLAY USERS -->
+            <div class="display-users">
+              <input class="form-control chat-user-filter" placeholder="Filter" type="text">
+              <%User.all.each do |user|%>
+                <div id = "divchatbox-<%= user.id%>"> </div>
+                <a href="javascript:void(0)" class="usr"  id="<%= user.id%>" onclick = 'addchatbox(this,"<%=user.email%>" ,"<%=current_user.email%>")' >
+                    <i></i><%= user.email%>
+            </a> 
+          <% end%>
+          <!-- extra -->
+
+          <!-- extra end-->
+
+      </div>
+      <!-- END DISPLAY USERS -->
+    </li>
+  </ul>
+</li>
+</ul>
+</nav>
+</aside>
+
+<script>
+ // add chat plugin function
+ function addchatbox(obj , sendemail ,  currentemail){
+  var addid = "divchatbox-" + obj.id.toString();
+  var chatboxdivid = "#divchatbox-" + obj.id.toString();  
+  if( $(chatboxdivid).hasClass("initi")) {
+    //$(chatboxdivid).chatbox("option", "boxManager").toggleBox();
+   $(chatboxdivid).closest(".ui-chatbox").show();
+
+  } else{
+    $(chatboxdivid).chatbox({id: addid, 
+      user:{key : sendemail},
+      title : sendemail ,
+      messageSent : function(id, user, msg) {
+          $.get("/sendmessage?message=" + msg + "&sendemail=" + sendemail + "&displaydiv=" + addid , function(result){
+            $(chatboxdivid).chatbox("option", "boxManager").addMsg(currentemail, msg);
+          });
+        }
+
+
+    });
+    $(chatboxdivid).addClass("initi"); 
+    $(chatboxdivid).closest(".ui-chatbox").show(); 
+  }
+ } 
+ //$("#togglea").chatbox("option", "boxManager").toggleBox();
+</script>

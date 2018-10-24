@@ -1,0 +1,96 @@
+<% content_for :body_class do %>
+<% end%>
+<% content_for :ribbon do %>
+  <!-- RIBBON -->
+  <div id="ribbon">
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+      <li>首页</li>
+      <li>测试服务器</li>
+    </ol>
+  </div>
+  <!-- END RIBBON -->
+<% end %>
+<!-- MAIN CONTENT -->
+<div id="content">
+  <!-- widget grid -->
+  <section id="widget-grid" class="">
+    <p id="notice"><%= notice %></p>
+    <!-- row -->
+    <div class="row">
+      <!-- NEW WIDGET START -->
+      <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+          <header>
+            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+            <h2> <%=title=%></h2>
+          </header>
+          <!-- widget div-->
+          <div>
+            <!-- widget edit box -->
+            <div class="jarviswidget-editbox">
+              <!-- This area used as dropdown edit box -->
+            </div>
+            <!-- end widget edit box -->
+            <!-- widget content -->
+            <div class="widget-body">
+              <div class="table-responsive">
+                <%= form_with(model: server, local: true , class: "form-horizontal m-t") do |form| %>
+                  <% if server.errors.any? %>
+                    <div id="error_explanation">
+                      <h2><%= pluralize(server.errors.count, "error") %> error</h2>
+                      <ul>
+                        <% server.errors.full_messages.each do |message| %>
+                          <li><%= message %></li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  <% end %>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">IP</label>
+                    <div class="col-sm-8">
+                      <%= form.text_field :ip, id: :ip ,:required => true , :class=>"form-control" %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">username</label>
+                    <div class="col-sm-8">
+                      <%= form.text_field :username, id: :username ,:required => true , :class=>"form-control" %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">password</label>
+                    <div class="col-sm-8">
+                      <%= form.text_field :password, id: :password ,:required => true , :class=>"form-control" %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">port</label>
+                    <div class="col-sm-8">
+                      <%= form.text_field :port, id: :port,:required => true , :class=>"form-control" %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-3">
+                      <% if commit %>
+                        <button type="submit" class="btn btn-primary" id="form_submit">
+                          提交
+                        </button>
+                      <%end%>
+                      <%= link_to '返回', servers_path , :class=>"btn btn-default" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+            <!-- end widget content -->
+          </div>
+          <!-- end widget div -->
+        </div>
+        <!-- end widget -->
+      </div>
+      <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+  </div>
+  <!-- END MAIN CONTENT -->

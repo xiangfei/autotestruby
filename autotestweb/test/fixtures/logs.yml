@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  controller: MyString
+  action: MyString
+  user: MyString
+  params: MyText
+  objid: 1
+  method: MyString
+
+two:
+  controller: MyString
+  action: MyString
+  user: MyString
+  params: MyText
+  objid: 1
+  method: MyString

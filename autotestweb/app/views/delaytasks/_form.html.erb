@@ -1,0 +1,130 @@
+<% content_for :body_class do %>
+<% end%>
+<% content_for :ribbon do %>
+  <!-- RIBBON -->
+  <div id="ribbon">
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+      <li>首页</li>
+      <li>定时计划</li>
+    </ol>
+  </div>
+  <!-- END RIBBON -->
+<% end %>
+<!-- MAIN CONTENT -->
+<div id="content">
+  <!-- widget grid -->
+  <section id="widget-grid" class="">
+    <p id="notice"><%= notice %></p>
+    <!-- row -->
+    <div class="row">
+      <!-- NEW WIDGET START -->
+      <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+          <header>
+            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+            <h2> <%=title=%></h2>
+          </header>
+          <!-- widget div-->
+          <div>
+            <!-- widget edit box -->
+            <div class="jarviswidget-editbox">
+              <!-- This area used as dropdown edit box -->
+            </div>
+            <!-- end widget edit box -->
+            <!-- widget content -->
+            <div class="widget-body">
+              <div class="table-responsive">
+                <%= form_with(model: delaytask, local: true , class: "form-horizontal m-t") do |form| %>
+                  <% if delaytask.errors.any? %>
+                    <div id="error_explanation">
+                      <h2><%= pluralize(delaytask.errors.count, "error") %> error</h2>
+                      <ul>
+                        <% delaytask.errors.full_messages.each do |message| %>
+                          <li><%= message %></li>
+                        <% end %>
+                      </ul>
+                    </div>
+                  <% end %>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">名</label>
+                    <div class="col-sm-8">
+                      <%= form.text_field :name, id: :name ,:required => true , :class=>"form-control" %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">crontab</label>
+                    <div class="col-sm-8">
+                      <%= form.text_field :crontab, id: :crontab ,:required => true , :class=>"form-control" %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">App</label>
+                    <div class="col-sm-8">
+                      <%= form.select :app, (App.all.collect {|p| [p.name, p.name]}) , {:include_blank => false},  id: :app , :class=>"form-control" %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">Apptype</label>
+                    <div class="col-sm-8">
+                      <%= form.select :apptype, casetype_list , {:include_blank=> false},  id: :apptype , :class=>"form-control" %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">server</label>
+                    <div class="col-sm-8">
+                      <%= form.select :server, (Server.all.collect {|p| [p.ip, p.ip]})  , {:include_blank=> false},  id: :apptype , :class=>"form-control" %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">env</label>
+                    <div class="col-sm-8">
+                      <%= form.select :env, env_list , {:include_blank=> false},  id: :apptype , :class=>"form-control" %>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label">mailto</label>
+                    <div class="col-sm-8">
+                      <%= form.select :mailto, (Emailgroup.all.collect {|p| [p.name, p.name]}) , {:include_blank => false},  id: :mailto , :class=>"form-control" %>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-4 col-sm-offset-3">
+                    <% if commit %>
+                      <button type="submit" class="btn btn-primary" id="form_submit">
+                        提交
+                      </button>
+                    <%end%>
+                    <%= link_to '返回', delaytasks_path , :class=>"btn btn-default" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <!-- end widget content -->
+        </div>
+        <!-- end widget div -->
+      </div>
+      <!-- end widget -->
+    </div>
+    <!-- end row -->
+  </section>
+  <!-- end widget grid -->
+</div>
+<!-- END MAIN CONTENT -->
+<script>
+  $('#app').select2({
+    closeOnSelect: false,
+    minimumResultsForSearch: -1
+  });
+  $('#apptype').select2({
+    closeOnSelect: false,
+    minimumResultsForSearch: -1
+  });
+  
+  $('#mailto').select2({
+    closeOnSelect: false,
+    minimumResultsForSearch: -1
+  });
+</script>

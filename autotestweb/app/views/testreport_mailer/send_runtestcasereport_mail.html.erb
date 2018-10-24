@@ -1,0 +1,16 @@
+Hi Guys
+<p>测试报告 <%=@runtestcase.reportname %> </p>
+<div>应用  <%=@runtestcase.app  %></div>
+<div>测试机器 <%=@runtestcase.server %> </div>
+<div>测试用户 <%=@runtestcase.user %> </div>
+<% if @runtestcase.status == "1" %>
+  <div><%=@success %>--<%=@successratio %></div>
+  <div><%=@skip %>--<%=@skipratio %></div>
+  <div><%=@error %>--<%=@errorratio %></div>
+<% else %>
+  <div> 
+    <pre><%=@runtestcase.logtext %> </pre>
+  </div>
+<%end%>
+<h3>更多信息查看附件</h3>
+<h3>邮寄自动发送，有问题联系测试用户</h3>

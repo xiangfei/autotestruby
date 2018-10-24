@@ -1,0 +1,15 @@
+wb = xlsx_package.workbook
+wb.styles do |s|
+  wrap_head_text = s.add_style :fg_color => "FFFFFF",
+                               :b => true,
+                               :bg_color => "464141",
+                               :sz => 20,
+                               :border => {:style => :thin, :color => "00"},
+                               :alignment => {:horizontal => :center,
+                                              :vertical => :center,
+                                              :wrap_text => true}
+
+  wb.add_worksheet(name: "测试用例") do |sheet|
+    sheet.add_row ["测试用例ID", "用例类型", "用例名", "应用名"], :style => wrap_head_text
+  end
+end

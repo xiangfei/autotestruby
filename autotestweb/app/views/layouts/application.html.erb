@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Autotestweb</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= action_cable_meta_tag %>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="current-user" id="<%= current_user.try(:id) %>">
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <style type="text/css">
+      .realtimelog {
+        height: 500px;
+          overflow-y: auto;
+        }
+    </style>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= yield(:scripts).present? ? yield(:scripts) : render(partial: 'layouts/scripts') %>
+  </head>
+  <!-- body_class 用来调整样式 -->
+  <body class="<%= yield :body_class %>">
+    <!-- HEADER -->
+    <%= render partial: 'layouts/header' %>
+    <!-- END HEADER -->
+    <!-- Left panel : Navigation area -->
+    <!-- Note: This width of the aside area can be adjusted through LESS variables -->
+    <%= render partial: 'layouts/left_panel' if current_user  %>
+    <!-- END NAVIGATION -->
+    <!-- MAIN PANEL -->
+    <div id="main" role="main">
+      <%= yield :ribbon %>
+      <div id="publicmessage" style="margin:20px;display:none">
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+          <!-- row -->
+          <div class="row">
+            <!-- NEW WIDGET START -->
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+              <header>
+                <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                <h2>realtime日志</h2>
+              </header>
+              <!-- widget div-->
+              <div>
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                  <!-- This area used as dropdown edit box -->
+                </div>
+                <!-- end widget edit box -->
+                <!-- widget content -->
+                <div class="widget-body">
+                  <a class="btn btn-danger" data-method="get" href="#" onclick="window.location.reload()">返回</a>
+                  <pre id = "realtimelog" class="realtimelog"></pre>
+                </div>
+                <!-- end widget content -->
+              </div>
+              <!-- end widget div -->
+            </div>
+            <!-- end widget -->
+          </div>
+          <!-- end row -->
+        </section>
+        <!-- end widget grid -->
+      </div>
+      <div id="deploymessage" style="margin:20px;display:none">
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+          <!-- row -->
+          <div class="row">
+            <!-- NEW WIDGET START -->
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+              <header>
+                <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                <h2>deploy message日志</h2>
+              </header>
+              <!-- widget div-->
+              <div>
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                  <!-- This area used as dropdown edit box -->
+                </div>
+                <!-- end widget edit box -->
+                <!-- widget content -->
+                <div class="widget-body" id= "deploymessagecontent">
+                  <a class="btn btn-danger" data-method="get" href="#" onclick="window.location.reload()">返回</a>
+                  <!-- pre id = "realtimelog" class="realtimelog"></pre -->
+                </div>
+                <!-- end widget content -->
+              </div>
+              <!-- end widget div -->
+            </div>
+            <!-- end widget -->
+          </div>
+          <!-- end row -->
+        </section>
+        <!-- end widget grid -->
+      </div>
+      <div id="privatemessage" style="margin:20px;display:none" >
+        <!-- widget grid -->
+        <section id="widget-grid" class="">
+          <!-- row -->
+          <div class="row">
+            <!-- NEW WIDGET START -->
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+              <header>
+                <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                <h2>realtime日志</h2>
+              </header>
+              <!-- widget div-->
+              <div>
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                  <!-- This area used as dropdown edit box -->
+                </div>
+                <!-- end widget edit box -->
+                <!-- widget content -->
+                <div class="widget-body">
+                  <a class="btn btn-danger" data-method="get" href="#" onclick="window.location.reload()">返回</a>
+                  <pre id = "privaterealtimelog" class="realtimelog"></pre>
+                </div>
+                <!-- end widget content -->
+              </div>
+              <!-- end widget div -->
+            </div>
+            <!-- end widget -->
+          </div>
+          <!-- end row -->
+        </section>
+        <!-- end widget grid -->
+      </div>
+      <% if notice %>
+        <div class="alert alert-success fade in">
+          <button data-dismiss="alert" class="close">
+            ×
+          </button>
+          <i class="fa-fw fa fa-check"></i>
+          <%= notice %>
+        </div>
+      <% end %>
+      <% if alert %>
+        <div class="alert alert-warning fade in">
+          <button data-dismiss="alert" class="close">
+            ×
+          </button>
+          <i class="fa-fw fa fa-warning"></i>
+          <%= alert %>
+        </div>
+      <% end %>
+      <%= yield %>
+      <!-- chat ui for websocket -->
+      <!--div class="demo" id="chatdiv">
+        <span id="demo-setting" onclick="displaychat()">chat</span>  </button>
+        <form>
+           <div> <input name="xxx" value="xxx"/> </div>
+           <div ><a> yyy </a> </div>
+           <div ><a> xxx </a> </div>
+         </form>
+       </div>
+    </div>--
+
+    <!-- end chat system-->
+      <div id="chat_div"></div>
+    </div>
+    <!-- END MAIN PANEL -->
+    <!-- PAGE FOOTER -->
+    <%= render partial: 'layouts/footer' if current_user  %>
+    <!-- END PAGE FOOTER -->
+  </body>
+  <script type="text/javascript">
+    $(function() {
+        // in app.js ,需要精简
+        // pageSetUp();
+        var left_m1=$("li.open span.menu-item-parent:first");
+        var left_m2=$("li.open ul li.active span.menu-item-parent");
+        if(left_m1.text() != ""){
+          $("ol.breadcrumb").append("<li>" + left_m1.text() +"</li>");
+        }
+        if(left_m1.text() != ""){
+          $("ol.breadcrumb").append("<li>" + left_m2.text() +"</li>");
+        }
+    
+    })
+    
+    function displaychat(){
+      if ($("#chatdiv").hasClass("activate")){
+        $("#chatdiv").removeClass("activate");
+    
+      } else{
+        $("#chatdiv").addClass("activate");
+      }
+    }
+      $("#chat_divxxxx").chatbox({id:"chat_div",
+    	user:{key : "value"},
+    	title : "test chat",
+    	messageSent : function(id, user, msg) {
+    	  $("#log").append(id + " said: " + msg + "<br/>");
+    	  $("#chat_div").chatbox("option", "boxManager").addMsg(id, msg);
+    	}
+      });
+  </script>
+</html>

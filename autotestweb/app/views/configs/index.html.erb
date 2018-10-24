@@ -1,0 +1,89 @@
+<% content_for :body_class do %>
+<% end%>
+<% content_for :ribbon do %>
+  <!-- RIBBON -->
+  <div id="ribbon">
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+      <li>首页</li>
+      <li>配置</li>
+    </ol>
+  </div>
+  <!-- END RIBBON -->
+<% end %>
+<!-- MAIN CONTENT -->
+<div id="content">
+  <!-- widget grid -->
+  <section id="widget-grid" class="">
+    <p id="notice"><%= notice %></p>
+    <!-- row -->
+    <div class="row">
+      <!-- NEW WIDGET START -->
+      <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+          <header>
+            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+            <h2>配置</h2>
+          </header>
+          <!-- widget div-->
+          <div>
+            <!-- widget edit box -->
+            <div class="jarviswidget-editbox">
+              <!-- This area used as dropdown edit box -->
+            </div>
+            <!-- end widget edit box -->
+            <!-- widget content -->
+            <div class="widget-body">
+              <div class="table-responsive">
+                <div style = "float:left;">
+                  <%= button_to '新增配置', new_config_path, method: "get", class: "btn btn-primary" %>
+                </div>
+                <div class="form-inline input-group input-group-sm" style="float:right; margin-left:50px;">
+                  <table>
+                    <%= search_form_for @q, url: configs_path(:env => @env)  do |f| %>
+                      <input class="form-control" style="display:none" type="search" value="<%=@env%>"  name="env" id="q_case_name_cont" />
+                      <td><%= f.search_field :name_or_app_name_cont, class: "form-control", style: "border:1px solid #C0C0C0" %></td>
+                      <td><span class="input-group-btn"><%= f.submit class: "btn btn-primary" %></span></td>
+                    <% end %>
+                  </table>
+                </div>
+                <table id="datatable_fixed_column" class="table table-striped table-bordered" width="100%">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>应用名</th>
+                      <th>配置名</th>
+                      <th>环境</th>
+                      <th>类型</th>
+                      <th colspan="3">操作选项</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @configs.each do |config| %>
+                      <tr>
+                        <td><%= config.id %></td>
+                        <td><%= config.app.name %></td>
+                        <td><%= config.name %></td>
+                        <td><%= config.env %></td>
+                        <td><%= config.casetype %></td>
+                        <td><%= link_to '查看', config  , :class=>'label label-info' %></td>
+                        <td><%= link_to '修改', edit_config_path(config), :class=>'label label-primary' %></td>
+                        <td><%= link_to '删除', config, method: :delete, data: { confirm: 'Are you sure?' } , :class=>'label label-danger'%></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <%= render partial: "layouts/paginator", locals: {zone: @configs} %>
+            <!-- end widget content -->
+          </div>
+          <!-- end widget div -->
+        </div>
+        <!-- end widget -->
+      </div>
+      <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+  </div>
+  <!-- END MAIN CONTENT -->

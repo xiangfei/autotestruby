@@ -1,0 +1,48 @@
+<% content_for :top_right do %>
+  <span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs">Already registered?</span>
+    <%= link_to 'Sign In', new_user_session_path, class: 'btn btn-xs bg-color-pink txt-color-white' %>
+  </span>
+<% end %>
+<% content_for :html_id, "extr-page" %>
+<!-- MAIN CONTENT -->
+<div >
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 hidden-xs hidden-sm">
+      <h1 class="txt-color-red login-header-big">注册</h1>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "new_user smart-form client-form" ,id:"smart-form-register" } ) do |f| %>
+            <%= devise_error_messages! %>
+            <!--header>
+              Registration
+            </header-->
+            <section>
+              <label class="input"> <i class="icon-append fa fa-envelope"></i>
+                <%= f.email_field :email, autofocus: true , placeholder: "Email address", autofocus: true %>
+                <b class="tooltip tooltip-bottom-right">Needed to verify your account</b> </label>
+            </section>
+            <section>
+              <label class="input"> <i class="icon-append fa fa-lock"></i>
+                <%= f.password_field :password, autocomplete: "off", placeholder: "password" %>
+                <b class="tooltip tooltip-bottom-right">Don't forget your password</b> </label>
+            </section>
+            <section>
+              <label class="input"> <i class="icon-append fa fa-lock"></i>
+                <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: "password confirm" %>
+                <b class="tooltip tooltip-bottom-right">Don't forget your password</b> </label>
+            </section>
+            <div class="actions">
+              <button type="submit" class="btn btn-primary">
+                Register
+              </button>
+            </div>
+          <% end %>
+      </div>
+    </div>
+  </div>
+  <% content_for :scripts do %>
+    <script type="text/javascript">
+      runAllForms();
+      // Validation , use backend validat instead of foreground
+      
+    </script>
+  <% end %>

@@ -1,0 +1,230 @@
+<% content_for :body_class do %>
+<% end%>
+<% content_for :ribbon do %>
+  <!-- RIBBON -->
+  <div id="ribbon">
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+      <li>首页</li>
+      <li>项目</li>
+    </ol>
+  </div>
+  <!-- END RIBBON -->
+<% end %>
+<!-- MAIN CONTENT -->
+<div id="content">
+  <!-- widget grid -->
+  <section id="widget-grid" class="">
+    <p id="notice"><%= notice %></p>
+    <!-- row -->
+    <div class="row">
+      <!-- NEW WIDGET START -->
+      <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+          <header>
+            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+            <h2>测试结果统计</h2>
+          </header>
+          <!-- widget div-->
+          <div>
+            <!-- widget edit box -->
+            <div class="jarviswidget-editbox">
+              <!-- This area used as dropdown edit box -->
+            </div>
+            <!-- end widget edit box -->
+            <!-- widget content -->
+            <div class="widget-body">
+              <div class="table-responsive">
+                <!-- add  button-->
+                <table id="datatable_fixed_column" class="table table-striped table-bordered" width="100%">
+                  <thead>
+                    <tr>
+                      <th>APP</th>
+                      <th>Status</th>
+                      <th>User</th>
+                      <th>Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <% @app_chart_status.each do |key ,value | %>
+                    <% app , status , user  =  key %>
+                    <tr>
+                        <td><%= app %></td>
+                        <td><%= status %></td>
+                        <td><%= user %></td>
+                        <td><%= value %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+                <div id="chartmain" style=" height: 400px;"></div>
+              </div>
+            </div>
+            <!-- end widget content -->
+          </div>
+          <!-- end widget div -->
+        </div>
+        <!-- end widget -->
+      </div>
+      <!-- end row -->
+    </section>
+    <!-- end widget grid -->
+  </div>
+  <!-- END MAIN CONTENT -->
+
+
+<script type="text/javascript">
+    //指定图标的配置和数据
+  var posList = [
+    'left', 'right', 'top', 'bottom',
+    'inside',
+    'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+    'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+  ];
+
+  var app  = {};
+  app.configParameters = {
+    rotate: {
+      min: -90,
+      max: 90
+    },
+    align: {
+      options: {
+        left: 'left',
+        center: 'center',
+          right: 'right'
+      }
+    },
+    verticalAlign: {
+      options: {
+        top: 'top',
+        middle: 'middle',
+        bottom: 'bottom'
+      }
+    },
+    position: {
+      options: echarts.util.reduce(posList, function (map, pos) {
+        map[pos] = pos;
+        return map;
+      }, {})
+    },
+    distance: {
+      min: 0,
+      max: 100
+    }
+  };
+
+  app.config = {
+    rotate: 90,
+    align: 'left',
+    verticalAlign: 'middle',
+    position: 'insideBottom',
+    distance: 15,
+    onChange: function () {
+      var labelOption = {
+        normal: {
+          rotate: app.config.rotate,
+          align: app.config.align,
+          verticalAlign: app.config.verticalAlign,
+          position: app.config.position,
+          distance: app.config.distance
+        }
+      };
+      myChart.setOption({
+        series: [{
+          label: labelOption
+        }, {
+          label: labelOption
+        }, {
+          label: labelOption
+        }, {
+          label: labelOption
+        }]
+      });
+    }
+  };
+
+
+  var labelOption = {
+    normal: {
+        show: true,
+        position: app.config.position,
+        distance: app.config.distance,
+        align: app.config.align,
+        verticalAlign: app.config.verticalAlign,
+        rotate: app.config.rotate,
+        formatter: '{c}  {name|{a}}',
+        fontSize: 16,
+        rich: {
+            name: {
+                textBorderColor: '#fff'
+            }
+        }
+    }
+  };
+
+  option = {
+    color: ['#003366', '#006699', '#4cabce' ],
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow'
+        }
+    },
+    legend: {
+        data: ['Forest', 'Steppe', 'Desert' ]
+    },
+    toolbox: {
+        show: true,
+        orient: 'vertical',
+        left: 'right',
+        top: 'center',
+        feature: {
+            mark: {show: true},
+            dataView: {show: true, readOnly: false},
+            magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
+    calculable: true,
+    xAxis: [
+        {
+            type: 'category',
+            axisTick: {show: false},
+            data: <%=raw  @user_list%> ,
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value'
+        }
+    ],
+    series: [
+        {
+            name: '测试用例执行成功',
+            type: 'bar',
+            barGap: 0,
+            label: labelOption,
+            data: <%= raw @success_list %>,
+        },
+        {
+            name: '测试用例执行失败',
+            type: 'bar',
+            label: labelOption,
+            data: <%= raw @failure_list %>,
+
+        },
+        {
+            name: '脚本运行失败',
+            type: 'bar',
+            label: labelOption,
+            data: <%= raw @error_list %>,
+         },
+
+    ]
+  };
+  var myChart = echarts.init(document.getElementById('chartmain'));
+    //使用制定的配置项和数据显示图表
+  myChart.setOption(option);
+</script>

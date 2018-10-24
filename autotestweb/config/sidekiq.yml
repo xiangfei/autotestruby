@@ -1,0 +1,21 @@
+:dynamic: true
+:dynamic_every: 5
+:verbose: false
+:max_retries: 0
+:concurrency: 20
+:pidfile: tmp/pids/sidekiq.pid
+:logfile: log/sidekiq.log
+:queues:
+  - default
+  - <%= `hostname`.strip %> #指定机器运行
+:schedule:
+  syncsvntestcaseatmidnight:
+    cron: '0 30 2 * * * Asia/Shanghai'   # 晚上2点半运行
+    class: 'SyncSvnTestcaseWorker'
+  syncsvntestcaseeveryonehour:
+    cron: '0 */2 * * * Asia/Shanghai'   # 2小时运行一次
+    class: 'SyncSvnTestcaseWorker'
+  syncdynamicworker:
+    cron: '0/10 * * * * Asia/Shanghai'   # 动态任务加载,10分钟一次。查询delaytask
+    class: 'DynamicWorker'
+
