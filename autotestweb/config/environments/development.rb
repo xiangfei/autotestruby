@@ -76,9 +76,9 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # add svn config
-  config.svn_autotest_url = "http://svn.51iwifi.com/repos/AWIFI-ORIG/AutomationTesting/code"
-  config.svn_username = "A0296"
-  config.svn_password = "roglecta"
+  config.svn_autotest_url = ""
+  config.svn_username = ""
+  config.svn_password = ""
   config.autotest_project_exclude = ["Gemfile", "Main.rb", "lib"]
   # websocket config
   config.action_cable.url = "ws://localhost:3000/cable"

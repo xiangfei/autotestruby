@@ -1,0 +1,6 @@
+autotestweb/public
+autotestweb/storage
+autotestweb/Gemfile.lock
+autotestweb/nohup.out
+autotestweb/tmp
+autotestweb/log
