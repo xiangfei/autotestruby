@@ -1,6 +1,14 @@
 # README
  后台rails 5.2 + ruby2.4, 前台 jquery + bootstrap + websocket + smartadmin(第三方模板)
- 
+
+##smartadmin 模板插件说明
+* chat 使用jquery ui chat plugin
+* 画图 echart
+* 声音 jquery voicecommand
+
+> 增加websocket 支持
+
+
 ## 安装rvm
 * curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
 * curl -sSL -L -k  https://get.rvm.io | bash -s stable
@@ -39,7 +47,7 @@ yum -y install redis
   1. config/initializers/ransack.rb
 + devise
   1. config/initializers/devise.rb
-
+  > webscoket认证使用cookie需要在devise，登陆增加cookie代码
 ## 启动
 + development
   1. bundle exec rails db:migrate
